@@ -12,11 +12,6 @@ import me.hlatky.wbpo.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = LoginFragment()
-    }
-
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var binding: FragmentLoginBinding
 
@@ -43,5 +38,10 @@ class LoginFragment : Fragment() {
         viewModel.also { vm ->
             // TODO observe states
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = LoginFragment()
     }
 }
