@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import me.hlatky.wbpo.R
+import me.hlatky.wbpo.data.PreferencesFollowedUsersStore
+import me.hlatky.wbpo.dataStore
 import me.hlatky.wbpo.model.User
 
 /**
@@ -38,7 +41,11 @@ class UserListFragment : Fragment() {
             ),
         )
 
-        adapter = UserListRecyclerViewAdapter(items)
+        adapter = UserListRecyclerViewAdapter(
+            store = PreferencesFollowedUsersStore(store = requireActivity().dataStore),
+            items = items,
+            lifecycleScope = lifecycleScope
+        )
     }
 
     override fun onCreateView(

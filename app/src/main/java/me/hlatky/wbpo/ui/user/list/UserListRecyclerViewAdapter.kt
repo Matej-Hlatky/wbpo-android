@@ -5,12 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import me.hlatky.wbpo.R
+import me.hlatky.wbpo.data.FollowedUsersStore
 import me.hlatky.wbpo.databinding.ItemUserBinding
 import me.hlatky.wbpo.model.User
 
 /** [RecyclerView.Adapter] that can display a list of [User]. */
 class UserListRecyclerViewAdapter(
+    private val store: FollowedUsersStore,
+    private val lifecycleScope: CoroutineScope,
     private val items: List<User>
 ) : RecyclerView.Adapter<UserListRecyclerViewAdapter.ViewHolder>() {
 
@@ -54,19 +59,20 @@ class UserListRecyclerViewAdapter(
 
     private fun ItemUserBinding.setupFollowing(user: User) {
         val userId = user.id ?: return
-        val isFollowed = (followedUserIds.contains(userId))
 
-        followToggle.also {
-            it.isChecked = isFollowed
-            it.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) followedUserIds.add(userId) else followedUserIds.remove(userId)
+        // TODO Move logic into ViewModel and separate repository on User
+
+        lifecycleScope.launch {
+            val isFollowed = store.getIsFollowed(userId)
+
+            followToggle.also {
+                it.isChecked = isFollowed
+                it.setOnCheckedChangeListener { _, isChecked ->
+                    lifecycleScope.launch {
+                        if (isChecked) store.followUser(userId) else store.unFollowUser(userId)
+                    }
+                }
             }
         }
-    }
-
-    companion object {
-        // TODO As persistent store
-        // TODO Move logic into repository
-        private val followedUserIds = mutableSetOf<Int>()
     }
 }
