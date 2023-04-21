@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import me.hlatky.wbpo.R
 import me.hlatky.wbpo.model.User
@@ -14,22 +15,46 @@ import me.hlatky.wbpo.model.User
  */
 class UserListFragment : Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_user_list, container, false)
-        val list = view.findViewById<RecyclerView>(R.id.list)
+    private lateinit var adapter: UserListRecyclerViewAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         val avatar = "https://i.pravatar.cc/128"
         val items = listOf(
-            User(firstName = "John", lastName = "Doe", avatar = avatar, id = null, email = "email one"),
-            User(firstName = "Hane", lastName = "Doe", avatar = avatar, id = null, email = "email two"),
+            User(
+                firstName = "John",
+                lastName = "Doe",
+                avatar = avatar,
+                id = null,
+                email = "email one"
+            ),
+            User(
+                firstName = "Hane",
+                lastName = "Doe",
+                avatar = avatar,
+                id = null,
+                email = "email two"
+            ),
         )
-        list.adapter = UserListRecyclerViewAdapter(items)
-        // TODO Set the LinearLayoutManager / GridLayoutManager based on screen width
 
-        return view
+        adapter = UserListRecyclerViewAdapter(items)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.fragment_user_list, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view.findViewById<RecyclerView>(R.id.list).also { list ->
+            val columns = resources.getInteger(R.integer.user_grid_columns)
+
+            list.layoutManager = GridLayoutManager(requireContext(), columns)
+            list.adapter = adapter
+        }
     }
 
     companion object {
