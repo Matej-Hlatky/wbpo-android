@@ -11,4 +11,7 @@
     <string name="user_register_label">Register</string>
     <string name="user_login_option_label">Or perhaps login</string>
 
+    <string name="user_terms_label">Terms and Conditions and Privacy Policy</string>
+    <string name="user_terms_url">https://google.com</string>
+
 </resources>

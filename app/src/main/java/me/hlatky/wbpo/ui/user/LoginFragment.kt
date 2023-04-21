@@ -1,11 +1,13 @@
 package me.hlatky.wbpo.ui.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import me.hlatky.wbpo.Intents
 import me.hlatky.wbpo.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -32,6 +34,10 @@ class LoginFragment : Fragment() {
         binding.also {
             it.lifecycleOwner = viewLifecycleOwner
             it.model = viewModel
+
+            it.termsButton.setOnClickListener {
+                startActivity(Intent(Intents.showTerms(requireContext())))
+            }
         }
 
         viewModel.also { vm ->
