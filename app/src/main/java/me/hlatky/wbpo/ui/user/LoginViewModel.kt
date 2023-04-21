@@ -1,7 +1,7 @@
-package me.hlatky.wbpo.ui.main
+package me.hlatky.wbpo.ui.user
 
 import androidx.lifecycle.ViewModel
 
-class MainViewModel : ViewModel() {
+class LoginViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }
