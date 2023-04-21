@@ -14,4 +14,6 @@
     <string name="user_terms_label">Terms and Conditions and Privacy Policy</string>
     <string name="user_terms_url">https://google.com</string>
 
+    <string name="user_follow_label">Follow</string>
+    <string name="user_unfollow_label">Unfollow</string>
 </resources>

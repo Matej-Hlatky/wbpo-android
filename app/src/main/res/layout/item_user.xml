@@ -1,8 +1,6 @@
 <layout>
     <data>
-        <variable
-            name="model"
-            type="me.hlatky.wbpo.model.User" />
+        <variable name="model" type="me.hlatky.wbpo.model.User" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -24,8 +22,8 @@
 
             <ImageView
                 android:id="@+id/avatarImage"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="@dimen/user_grid_avatar_size"
+                android:layout_height="@dimen/user_grid_avatar_size"
                 android:layout_marginEnd="8dp"
                 tools:src="@tools:sample/avatars"
                 tools:ignore="ContentDescription" />
@@ -35,7 +33,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/avatarImage"
+                android:layout_toStartOf="@id/followToggle"
                 android:text="@{model.fullName}"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                 tools:text="@tools:sample/full_names"
                 />
@@ -44,12 +45,26 @@
                 android:id="@+id/emailText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:layout_toEndOf="@id/avatarImage"
+                android:layout_toStartOf="@id/followToggle"
                 android:layout_below="@id/fullNameText"
                 android:text="@{model.email}"
+                android:maxLines="1"
+                android:ellipsize="end"
                 tools:text="@tools:sample/last_names"
                 />
+
+            <CheckBox
+                android:id="@+id/followToggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:button="@drawable/selector_toggle_favorite_24"
+                android:tooltipText="@string/user_follow_label"
+                app:buttonTint="@android:color/black"
+                tools:button="@drawable/ic_user_follow_24"
+                tools:ignore="UnusedAttribute" />
 
         </RelativeLayout>
 

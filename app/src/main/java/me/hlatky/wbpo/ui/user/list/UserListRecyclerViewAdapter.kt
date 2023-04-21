@@ -28,6 +28,7 @@ class UserListRecyclerViewAdapter(
         holder.binding.also {
             it.model = user
             it.setAvatar(user)
+            it.setupFollowing(user)
         }
     }
 
@@ -49,5 +50,23 @@ class UserListRecyclerViewAdapter(
                 transformations(CircleCropTransformation())
             }
         }
+    }
+
+    private fun ItemUserBinding.setupFollowing(user: User) {
+        val userId = user.id ?: return
+        val isFollowed = (followedUserIds.contains(userId))
+
+        followToggle.also {
+            it.isChecked = isFollowed
+            it.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) followedUserIds.add(userId) else followedUserIds.remove(userId)
+            }
+        }
+    }
+
+    companion object {
+        // TODO As persistent store
+        // TODO Move logic into repository
+        private val followedUserIds = mutableSetOf<Int>()
     }
 }

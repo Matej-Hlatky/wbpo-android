@@ -26,14 +26,14 @@ class UserListFragment : Fragment() {
                 firstName = "John",
                 lastName = "Doe",
                 avatar = avatar,
-                id = null,
+                id = 1,
                 email = "email one"
             ),
             User(
                 firstName = "Hane",
                 lastName = "Doe",
                 avatar = avatar,
-                id = null,
+                id = 2,
                 email = "email two"
             ),
         )
