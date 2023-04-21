@@ -1,0 +1,14 @@
+.gradle
+.idea
+!.idea/.name
+/build
+/captures
+/local.properties
+output.json
+*.jks
+*.apk
+*.aab
+*.zip
+.DS_Store
+output-metadata.json
+app/lint-baseline.xml
