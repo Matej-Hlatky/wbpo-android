@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import me.hlatky.wbpo.R
+import me.hlatky.wbpo.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
@@ -16,16 +16,26 @@ class LoginFragment : Fragment() {
     }
 
     private val viewModel: LoginViewModel by viewModels()
+    private lateinit var binding: FragmentLoginBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_login, container, false)
+    ): View = FragmentLoginBinding.inflate(inflater, container, false).also {
+        binding = it
+    }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO Bind UI to VM
+        binding.also {
+            it.lifecycleOwner = viewLifecycleOwner
+            it.model = viewModel
+        }
+
+        viewModel.also { vm ->
+            // TODO observe states
+        }
     }
 }
