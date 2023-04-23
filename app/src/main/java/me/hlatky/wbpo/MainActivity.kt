@@ -1,18 +1,48 @@
 package me.hlatky.wbpo
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
-import me.hlatky.wbpo.ui.main.MainFragment
+import android.util.Log
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import me.hlatky.wbpo.ui.user.LoginFragment
+import me.hlatky.wbpo.ui.user.list.UserListFragment
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : AppCompatActivity() {
 
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "onCreate: ${savedInstanceState?.javaClass?.simpleName}")
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
-                .commitNow()
+
+        viewModel.selectedRoute.observe(this) { route: Route? ->
+            route?.run(::onRouteChanged)
         }
+    }
+
+    private fun onRouteChanged(route: Route) {
+        Log.d(TAG, "onRouteChanged: route=${route.name}")
+
+        val fragment = when (route) {
+            Route.USER_LOGIN -> LoginFragment.newInstance()
+            Route.USER_LIST -> UserListFragment.newInstance()
+        }
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            .replace(R.id.container, fragment)
+            .commitNow()
+    }
+
+    companion object {
+        private val TAG = MainActivity::class.java.name
     }
 }

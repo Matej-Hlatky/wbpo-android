@@ -1,0 +1,9 @@
+<ProgressBar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?android:attr/progressBarStyleHorizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true"
+    android:paddingHorizontal="28dp"
+    android:paddingVertical="8dp"
+    />

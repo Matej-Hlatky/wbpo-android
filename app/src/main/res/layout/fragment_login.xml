@@ -1,0 +1,95 @@
+<layout>
+    <data>
+        <import type="android.text.TextUtils"/>
+        <import type="android.view.View"/>
+        <variable name="model" type="me.hlatky.wbpo.ui.user.LoginViewModel" />
+    </data>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.user.LoginFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/content_margin"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true">
+
+            <!-- email -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/user_email_hint"
+                app:startIconDrawable="@drawable/ic_email_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="emailAddress"
+                    android:inputType="textEmailAddress"
+                    android:text="@={model.email}"
+                    android:maxLength="250" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- password -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/user_password_hint"
+                app:passwordToggleEnabled="true"
+                app:startIconDrawable="@drawable/ic_password_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="password"
+                    android:inputType="textPassword"
+                    android:imeOptions="actionDone"
+                    android:text="@={model.password}"
+                    android:maxLength="250" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Primary button: Login or Register -->
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:text="@{!model.registrationNeeded ? @string/user_login_label : @string/user_register_label}"
+                android:enabled="@{!TextUtils.isEmpty(model.email)}"
+                android:onClick="@{() -> !model.registrationNeeded ? model.requestLogin() : model.requestRegister()}"
+                tools:text="@string/user_login_label" />
+
+            <!-- Secondary button - switch -->
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="160dp"
+                android:layout_marginTop="24dp"
+                android:layout_gravity="center_horizontal"
+                android:text="@{!model.registrationNeeded ? @string/user_register_option_label : @string/user_login_option_label}"
+                android:onClick="@{() -> model.registrationNeeded ? model.switchToLogin() : model.switchToRegistration()}"
+                tools:text="@string/user_register_option_label" />
+
+            <!-- Terms -->
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.Material3.Button.TextButton"
+                android:id="@+id/termsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="@{model.registrationNeeded ? View.VISIBLE : View.INVISIBLE}"
+                android:text="@string/user_terms_label" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</layout>
