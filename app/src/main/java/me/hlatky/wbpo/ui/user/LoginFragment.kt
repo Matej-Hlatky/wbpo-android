@@ -6,13 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import me.hlatky.wbpo.Intents
+import me.hlatky.wbpo.MainViewModel
+import me.hlatky.wbpo.Route
 import me.hlatky.wbpo.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
+    private val activityViewModel: MainViewModel by activityViewModels()
     private lateinit var binding: FragmentLoginBinding
 
     override fun onCreateView(
@@ -36,7 +40,11 @@ class LoginFragment : Fragment() {
         }
 
         viewModel.also { vm ->
-            // TODO observe states
+            vm.loginResult.observe(viewLifecycleOwner) { state ->
+                state
+            }
+
+            // TODO Extension based on state? loading error failure
         }
     }
 

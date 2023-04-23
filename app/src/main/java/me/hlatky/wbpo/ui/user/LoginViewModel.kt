@@ -2,6 +2,9 @@ package me.hlatky.wbpo.ui.user
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.delay
+import me.hlatky.wbpo.ui.UIState
+import me.hlatky.wbpo.ui.invokeAction
 
 /** [ViewModel] for the [LoginFragment] that provides user login / register functionality. */
 class LoginViewModel : ViewModel() {
@@ -15,6 +18,12 @@ class LoginViewModel : ViewModel() {
     /** "Password" input value. */
     val password = MutableLiveData<String>()
 
+    /** The result from [requestLogin].*/
+    val loginResult = MutableLiveData<UIState<Boolean>>()
+
+    /** The result from [requestRegister].*/
+    val registerResult = MutableLiveData<UIState<Boolean>>()
+
     fun switchToRegistration() {
         registrationNeeded.value = true
     }
@@ -23,12 +32,18 @@ class LoginViewModel : ViewModel() {
         registrationNeeded.value = false
     }
 
-    fun requestLogin() {
-        // TODO Implement requestLogin
-        //viewModelScope.launch {  }
+    fun requestLogin() = invokeAction(loginResult) {
+        login()
     }
 
-    fun requestRegister() {
-        // TODO Implement requestRegister
+    fun requestRegister() = invokeAction(registerResult) {
+        login()
+    }
+
+    private suspend fun login(): Boolean {
+        // TODO Implement login
+        delay(500)
+
+        return true
     }
 }
