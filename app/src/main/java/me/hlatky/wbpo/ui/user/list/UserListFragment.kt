@@ -39,6 +39,48 @@ class UserListFragment : Fragment() {
                 id = 2,
                 email = "email two"
             ),
+            User(
+                firstName = "Hane",
+                lastName = "Doe",
+                avatar = avatar,
+                id = 3,
+                email = "email two"
+            ),
+            User(
+                firstName = "Hane",
+                lastName = "Doe",
+                avatar = avatar,
+                id = 4,
+                email = "email two"
+            ),
+            User(
+                firstName = "Hane",
+                lastName = "Doe",
+                avatar = avatar,
+                id = 5,
+                email = "email two"
+            ),
+            User(
+                firstName = "Hane",
+                lastName = "Doe",
+                avatar = avatar,
+                id = 6,
+                email = "email two"
+            ),
+            User(
+                firstName = "Jane",
+                lastName = "7",
+                avatar = avatar,
+                id = 7,
+                email = "email two"
+            ),
+            User(
+                firstName = "John",
+                lastName = "8",
+                avatar = avatar,
+                id = 8,
+                email = "email two"
+            ),
         )
 
         adapter = UserListRecyclerViewAdapter(

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.delay
 import me.hlatky.wbpo.ui.UIState
 import me.hlatky.wbpo.ui.invokeAction
+import java.io.IOException
 
 /** [ViewModel] for the [LoginFragment] that provides user login / register functionality. */
 class LoginViewModel : ViewModel() {
@@ -19,10 +20,10 @@ class LoginViewModel : ViewModel() {
     val password = MutableLiveData<String>()
 
     /** The result from [requestLogin].*/
-    val loginResult = MutableLiveData<UIState<Boolean>>()
+    val loginResult = MutableLiveData<UIState<Unit>>()
 
     /** The result from [requestRegister].*/
-    val registerResult = MutableLiveData<UIState<Boolean>>()
+    val registerResult = MutableLiveData<UIState<Unit>>()
 
     fun switchToRegistration() {
         registrationNeeded.value = true
@@ -37,13 +38,17 @@ class LoginViewModel : ViewModel() {
     }
 
     fun requestRegister() = invokeAction(registerResult) {
-        login()
+        register()
     }
 
-    private suspend fun login(): Boolean {
+    private suspend fun login() {
         // TODO Implement login
-        delay(500)
+        delay(150)
+    }
 
-        return true
+    private suspend fun register() {
+        // TODO Implement register
+        delay(250)
+        throw IOException("Some technical error")
     }
 }

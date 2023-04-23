@@ -1,5 +1,6 @@
 package me.hlatky.wbpo.ui.user
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,14 +11,21 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import me.hlatky.wbpo.Intents
 import me.hlatky.wbpo.MainViewModel
+import me.hlatky.wbpo.R
 import me.hlatky.wbpo.Route
 import me.hlatky.wbpo.databinding.FragmentLoginBinding
+import me.hlatky.wbpo.ui.showErrorDialog
+import me.hlatky.wbpo.ui.showProgressDialog
+import me.hlatky.wbpo.util.getLocalizedUserFacingMessage
+import me.hlatky.wbpo.util.hideKeyboard
 
 class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels()
     private val activityViewModel: MainViewModel by activityViewModels()
     private lateinit var binding: FragmentLoginBinding
+
+    private var progressDialog: DialogInterface? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,11 +49,48 @@ class LoginFragment : Fragment() {
 
         viewModel.also { vm ->
             vm.loginResult.observe(viewLifecycleOwner) { state ->
-                state
+                state?.fold(
+                    onLoadingStart = {
+                        view.hideKeyboard()
+                        progressDialog = context?.showProgressDialog(R.string.user_login_progress_message)
+                    },
+                    onLoadingEnd = {
+                        progressDialog?.dismiss()
+                        progressDialog = null
+                    },
+                    onSuccess = {
+                        activityViewModel.selectRoute(Route.USER_LIST)
+                    },
+                    onFailure = { error ->
+                        context?.showErrorDialog(message = error.getLocalizedUserFacingMessage(resources))
+                    }
+                )
             }
-
-            // TODO Extension based on state? loading error failure
+            vm.registerResult.observe(viewLifecycleOwner) { state ->
+                state?.fold(
+                    onLoadingStart = {
+                        view.hideKeyboard()
+                        progressDialog = context?.showProgressDialog(R.string.user_register_progress_message)
+                    },
+                    onLoadingEnd = {
+                        progressDialog?.dismiss()
+                        progressDialog = null
+                    },
+                    onSuccess = {
+                        activityViewModel.selectRoute(Route.USER_LIST)
+                    },
+                    onFailure = { error ->
+                        context?.showErrorDialog(message = error.getLocalizedUserFacingMessage(resources))
+                    }
+                )
+            }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        progressDialog?.dismiss()
     }
 
     companion object {
