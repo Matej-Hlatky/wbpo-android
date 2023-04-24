@@ -1,14 +1,15 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
-
 
 ext {
     ext.retrofit_version = '2.9.0' // https://github.com/square/retrofit/tags
     ext.okhttp_version = '4.11.0' // https://github.com/square/okhttp/tags
+    ext.hilt_version = '2.45' // https://github.com/google/dagger/releases
 }
-
 
 android {
     namespace 'me.hlatky.wbpo'
@@ -63,8 +64,16 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
     testImplementation 'junit:junit:4.13.2'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }
