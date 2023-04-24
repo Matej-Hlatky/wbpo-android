@@ -15,14 +15,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/content_margin"
+            android:padding="@dimen/content_margin"
             android:orientation="vertical"
             android:animateLayoutChanges="true">
+
+            <!-- logo -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="48dp"
+                android:src="@mipmap/ic_launcher"
+                android:contentDescription="@string/app_name"
+                android:onClick="@{() -> model.prefillInputs()}"
+                />
 
             <!-- email -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/text_input_layout_margin_vertical"
                 android:hint="@string/user_email_hint"
                 app:startIconDrawable="@drawable/ic_email_24">
 
@@ -40,6 +52,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/text_input_layout_margin_vertical"
                 android:hint="@string/user_password_hint"
                 app:passwordToggleEnabled="true"
                 app:startIconDrawable="@drawable/ic_password_24">
@@ -59,7 +72,7 @@
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="48dp"
                 android:text="@{!model.registrationNeeded ? @string/user_login_label : @string/user_register_label}"
                 android:enabled="@{!TextUtils.isEmpty(model.email)}"
                 android:onClick="@{() -> !model.registrationNeeded ? model.requestLogin() : model.requestRegister()}"

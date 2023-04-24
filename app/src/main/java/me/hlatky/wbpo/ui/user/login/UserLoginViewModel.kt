@@ -45,6 +45,12 @@ class UserLoginViewModel @Inject constructor(
         register()
     }
 
+    /** Fills inputs with hardcoded values. */
+    fun prefillInputs() {
+        email.value = "eve.holt@reqres.in"
+        password.value = "pistol"
+    }
+
     private suspend fun login() {
         val email = email.value.orEmpty()
         val password = password.value.orEmpty()
