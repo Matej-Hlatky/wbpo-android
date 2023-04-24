@@ -1,4 +1,4 @@
-package me.hlatky.wbpo.ui.user
+package me.hlatky.wbpo.ui.user.login
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import me.hlatky.wbpo.Intents
 import me.hlatky.wbpo.MainViewModel
 import me.hlatky.wbpo.R
@@ -19,6 +20,7 @@ import me.hlatky.wbpo.ui.showProgressDialog
 import me.hlatky.wbpo.util.getLocalizedUserFacingMessage
 import me.hlatky.wbpo.util.hideKeyboard
 
+@AndroidEntryPoint
 class UserLoginFragment : Fragment() {
 
     private val viewModel: UserLoginViewModel by viewModels()

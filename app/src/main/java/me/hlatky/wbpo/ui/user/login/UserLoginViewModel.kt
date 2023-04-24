@@ -1,13 +1,16 @@
-package me.hlatky.wbpo.ui.user
+package me.hlatky.wbpo.ui.user.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import me.hlatky.wbpo.repo.UserRepository
 import me.hlatky.wbpo.ui.UIState
 import me.hlatky.wbpo.ui.invokeAction
+import javax.inject.Inject
 
 /** [ViewModel] for the [UserLoginFragment] that provides user login / register functionality. */
-class UserLoginViewModel(
+@HiltViewModel
+class UserLoginViewModel @Inject constructor(
     private val repository: UserRepository
 ) : ViewModel() {
 

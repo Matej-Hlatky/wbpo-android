@@ -8,11 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import me.hlatky.wbpo.ui.user.UserLoginFragment
+import dagger.hilt.android.AndroidEntryPoint
+import me.hlatky.wbpo.ui.user.login.UserLoginFragment
 import me.hlatky.wbpo.ui.user.list.UserListFragment
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
