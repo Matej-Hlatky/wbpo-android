@@ -6,7 +6,8 @@ import me.hlatky.wbpo.model.UserLoginRequest
 import me.hlatky.wbpo.model.UserRegisterRequest
 import me.hlatky.wbpo.model.UserSession
 import me.hlatky.wbpo.store.UserSessionStore
-import retrofit2.await
+import me.hlatky.wbpo.util.getOrThrow
+import retrofit2.awaitResponse
 import javax.inject.Inject
 
 /** [UserRepository] that uses [ApiClient]. */
@@ -20,7 +21,9 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun register(email: String, password: String) {
         apiClient
             .register(UserRegisterRequest(username = email, email = email, password = password))
-            .await().also {
+            .awaitResponse()
+            .getOrThrow()
+            .also {
                 userSession = UserSession(token = it.token)
             }
     }
@@ -28,17 +31,19 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun login(email: String, password: String) {
         apiClient
             .login(UserLoginRequest(username = email, email = email, password = password))
-            .await().also {
+            .awaitResponse()
+            .getOrThrow()
+            .also {
                 userSession = UserSession(id = it.id, token = it.token)
             }
     }
 
     override suspend fun logout() {
-        apiClient.logout().await().also {
+        apiClient.logout().awaitResponse().getOrThrow().also {
             userSession = null
         }
     }
 
     override suspend fun getAll(page: Int, perPage: Int): List<User> =
-        apiClient.getUsers(perPage, page).await().data
+        apiClient.getUsers(perPage, page).awaitResponse().getOrThrow().data
 }
