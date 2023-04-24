@@ -70,13 +70,9 @@ class UserListFragment : Fragment() {
             list.adapter = adapter
         }
 
-        if (viewModel.list.value.isEmpty()) {
-            viewModel.loadMore()
-        }
-
         // Sync ViewModel list with adapter
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.list.collect(adapter::submitList)
+            viewModel.list.collect(adapter::submitData)
         }
     }
 

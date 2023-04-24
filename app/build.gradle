@@ -9,6 +9,7 @@ ext {
     ext.retrofit_version = '2.9.0' // https://github.com/square/retrofit/tags
     ext.okhttp_version = '4.11.0' // https://github.com/square/okhttp/tags
     ext.hilt_version = '2.45' // https://github.com/google/dagger/releases
+    ext.paging_version = '3.1.1' // https://github.com/google/dagger/releases
 }
 
 android {
@@ -76,6 +77,10 @@ dependencies {
     // Hilt DI
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    // Paging
+    implementation "androidx.paging:paging-common-ktx:$paging_version"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     testImplementation 'junit:junit:4.13.2'
 

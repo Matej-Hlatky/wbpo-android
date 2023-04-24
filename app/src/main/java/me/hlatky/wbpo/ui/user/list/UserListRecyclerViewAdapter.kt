@@ -2,8 +2,8 @@ package me.hlatky.wbpo.ui.user.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -12,7 +12,7 @@ import me.hlatky.wbpo.databinding.ItemUserBinding
 import me.hlatky.wbpo.model.User
 
 /** [RecyclerView.Adapter] that can display a list of [User]. */
-class UserListRecyclerViewAdapter : ListAdapter<User, UserListRecyclerViewAdapter.ViewHolder>(DiffCallback()) {
+class UserListRecyclerViewAdapter : PagingDataAdapter<User, UserListRecyclerViewAdapter.ViewHolder>(DiffCallback()) {
 
     private val placeholder = R.drawable.shape_avatar_placeholder
 
@@ -25,7 +25,7 @@ class UserListRecyclerViewAdapter : ListAdapter<User, UserListRecyclerViewAdapte
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = currentList[position]
+        val user = getItem(position) ?: return
 
         holder.binding.also {
             it.model = user
@@ -60,7 +60,7 @@ class UserListRecyclerViewAdapter : ListAdapter<User, UserListRecyclerViewAdapte
             it.setOnCheckedChangeListener { _, isChecked ->
                 changeUserIsFollowListener?.changeUserIsFollowing(user, isChecked)
                 // TODO This state is not preserved when recycled -> need to refresh source list
-                user.isFollowed = true
+                user.isFollowed = isChecked
             }
         }
     }
