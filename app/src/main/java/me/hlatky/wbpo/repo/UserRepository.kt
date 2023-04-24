@@ -1,13 +1,16 @@
 package me.hlatky.wbpo.repo
 
 import me.hlatky.wbpo.model.User
+import me.hlatky.wbpo.model.UserSession
 
 /** Repo for [User]. */
 interface UserRepository {
 
-    suspend fun register(email: String, password: String): String
+    val userSession: UserSession?
 
-    suspend fun login(email: String, password: String): String
+    suspend fun register(email: String, password: String)
+
+    suspend fun login(email: String, password: String)
 
     suspend fun logout()
 

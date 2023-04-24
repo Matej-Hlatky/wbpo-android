@@ -8,7 +8,7 @@ import coil.transform.CircleCropTransformation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.hlatky.wbpo.R
-import me.hlatky.wbpo.data.FollowedUsersStore
+import me.hlatky.wbpo.store.FollowedUsersStore
 import me.hlatky.wbpo.databinding.ItemUserBinding
 import me.hlatky.wbpo.model.User
 

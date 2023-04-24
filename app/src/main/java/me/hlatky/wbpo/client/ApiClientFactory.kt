@@ -28,14 +28,13 @@ object ApiClientFactory {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(JSON_CONVERTER))
             .build()
-            // TODO use .responseBodyConverter<>() ?
             .create(ApiClient::class.java)
     }
 
     private fun createClient(loggingLevel: LoggingLevel): OkHttpClient {
         return OkHttpClient.Builder().also {
             it.connectTimeout(5, TimeUnit.SECONDS)
-            it.readTimeout(30, TimeUnit.SECONDS)
+            it.readTimeout(5, TimeUnit.SECONDS)
 
             // This interceptor logs HTTP traffic
             it.addInterceptor(

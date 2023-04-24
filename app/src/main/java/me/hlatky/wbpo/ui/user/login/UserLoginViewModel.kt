@@ -48,14 +48,14 @@ class UserLoginViewModel @Inject constructor(
     private suspend fun login() {
         val email = email.value.orEmpty()
         val password = password.value.orEmpty()
-        val response = repository.login(email, password)
-        // TODO Store access TOKEN
+
+        repository.login(email, password)
     }
 
     private suspend fun register() {
         val email = email.value.orEmpty()
         val password = password.value.orEmpty()
-        val response = repository.register(email, password)
-        // TODO Store User ID and access TOKEN
+
+        repository.register(email, password)
     }
 }

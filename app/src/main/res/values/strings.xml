@@ -7,7 +7,8 @@
     <string name="dialog_cancel">@android:string/cancel</string>
     <string name="dialog_error_title">Error 😢</string>
 
-    <string name="error_message">There has been an error: \n%1$s</string>
+    <string name="error_generic_message">There has been an error: \n%1$s</string>
+    <string name="error_internet_message">Make sure you have stable Internet connection and repeat this action again.\n\n%1$s</string>
 
     <!-- User -->
     <string name="user_email_hint">E-mail</string>
