@@ -2,7 +2,7 @@
     <data>
         <import type="android.text.TextUtils"/>
         <import type="android.view.View"/>
-        <variable name="model" type="me.hlatky.wbpo.ui.user.LoginViewModel" />
+        <variable name="model" type="me.hlatky.wbpo.ui.user.UserLoginViewModel" />
     </data>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,7 +10,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.user.LoginFragment">
+        tools:context=".ui.user.UserLoginFragment">
 
         <LinearLayout
             android:layout_width="match_parent"

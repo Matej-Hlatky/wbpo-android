@@ -1,5 +1,5 @@
 package me.hlatky.wbpo.model
 
-data class RegisterResponse(
+data class UserRegisterResponse(
     val token: String
 )

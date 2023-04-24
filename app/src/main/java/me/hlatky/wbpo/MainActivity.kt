@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import me.hlatky.wbpo.ui.user.LoginFragment
+import me.hlatky.wbpo.ui.user.UserLoginFragment
 import me.hlatky.wbpo.ui.user.list.UserListFragment
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onRouteChanged: route=${route.name}")
 
         val fragment = when (route) {
-            Route.USER_LOGIN -> LoginFragment.newInstance()
+            Route.USER_LOGIN -> UserLoginFragment.newInstance()
             Route.USER_LIST -> UserListFragment.newInstance()
         }
 

@@ -1,10 +1,10 @@
 package me.hlatky.wbpo.client
 
 import me.hlatky.wbpo.model.GetUsersResponse
-import me.hlatky.wbpo.model.LoginRequest
-import me.hlatky.wbpo.model.LoginResponse
-import me.hlatky.wbpo.model.RegisterRequest
-import me.hlatky.wbpo.model.RegisterResponse
+import me.hlatky.wbpo.model.UserLoginRequest
+import me.hlatky.wbpo.model.UserLoginResponse
+import me.hlatky.wbpo.model.UserRegisterRequest
+import me.hlatky.wbpo.model.UserRegisterResponse
 import me.hlatky.wbpo.model.User
 import retrofit2.Call
 import retrofit2.http.Body
@@ -20,13 +20,13 @@ import retrofit2.http.Query
  */
 interface ApiClient {
     @POST("register")
-    fun register(@Body request: RegisterRequest): Call<RegisterResponse>
+    fun register(@Body request: UserRegisterRequest): Call<UserRegisterResponse>
 
     @POST("login")
-    fun login(@Body request: LoginRequest): Call<LoginResponse>
+    fun login(@Body request: UserLoginRequest): Call<UserLoginResponse>
 
     @POST("logout")
-    fun logout(): Call<Void>
+    fun logout(): Call<Unit>
 
     @GET("users")
     fun getUsers(@Query("perPage") perPage: Int, @Query("page") page: Int): Call<GetUsersResponse>

@@ -7,8 +7,8 @@ import me.hlatky.wbpo.ui.UIState
 import me.hlatky.wbpo.ui.invokeAction
 import java.io.IOException
 
-/** [ViewModel] for the [LoginFragment] that provides user login / register functionality. */
-class LoginViewModel : ViewModel() {
+/** [ViewModel] for the [UserLoginFragment] that provides user login / register functionality. */
+class UserLoginViewModel : ViewModel() {
 
     /** Flag to switch between login / registration state. */
     val registrationNeeded = MutableLiveData(false)

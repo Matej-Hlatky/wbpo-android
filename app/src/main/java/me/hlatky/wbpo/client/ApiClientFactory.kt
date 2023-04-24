@@ -22,13 +22,13 @@ object ApiClientFactory {
     fun create(endpoint: String, isDebug: Boolean): ApiClient {
         val loggingLevel = if (isDebug) LoggingLevel.BODY else LoggingLevel.NONE
         val client = createClient(loggingLevel)
-        val retrofit: Retrofit = Retrofit.Builder()
+
+        return Retrofit.Builder()
             .baseUrl(endpoint)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(JSON_CONVERTER))
             .build()
-
-        return retrofit.create(ApiClient::class.java)
+            .create(ApiClient::class.java)
     }
 
     private fun createClient(loggingLevel: LoggingLevel): OkHttpClient {
