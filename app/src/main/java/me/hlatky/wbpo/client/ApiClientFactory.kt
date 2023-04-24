@@ -28,6 +28,7 @@ object ApiClientFactory {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(JSON_CONVERTER))
             .build()
+            // TODO use .responseBodyConverter<>() ?
             .create(ApiClient::class.java)
     }
 
