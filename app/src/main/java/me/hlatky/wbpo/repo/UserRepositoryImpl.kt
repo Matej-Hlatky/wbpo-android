@@ -44,6 +44,6 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAll(page: Int, perPage: Int): GetUsersResponse =
-        apiClient.getUsers(perPage, page).awaitResponse().getOrThrow()
+    override suspend fun getList(page: Int, perPage: Int): GetUsersResponse =
+        apiClient.getUsers(page, perPage).awaitResponse().getOrThrow()
 }

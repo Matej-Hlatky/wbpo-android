@@ -26,12 +26,13 @@ class UserListViewModel @Inject constructor(
     fun loadMore() {
         viewModelScope.launch {
             runCatching {
-                repository.getAll(lastPage +1, 10)
+                repository.getList(lastPage +1, 5)
             }.onSuccess {
                 val prevList = _list.value
 
                 _list.value = (prevList + it.data)
                 lastPage = it.page
+                //it.totalPages
             }
         }
     }

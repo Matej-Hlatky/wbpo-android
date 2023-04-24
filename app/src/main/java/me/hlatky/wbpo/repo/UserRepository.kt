@@ -15,5 +15,5 @@ interface UserRepository {
 
     suspend fun logout()
 
-    suspend fun getAll(page: Int, perPage: Int): GetUsersResponse
+    suspend fun getList(page: Int, perPage: Int): GetUsersResponse
 }
