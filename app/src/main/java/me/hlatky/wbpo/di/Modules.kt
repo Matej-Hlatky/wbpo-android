@@ -50,6 +50,7 @@ class DataStoreModule {
         context.dataStore
 }
 
+@Suppress("unused")
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class StoreModule {
