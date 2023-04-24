@@ -5,16 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import me.hlatky.wbpo.R
-import me.hlatky.wbpo.store.PreferencesFollowedUsersStore
-import me.hlatky.wbpo.dataStore
 import me.hlatky.wbpo.model.User
-import me.hlatky.wbpo.store.FollowedUsersStore
-import javax.inject.Inject
 
 /**
  * A fragment representing a list of [User].
@@ -22,78 +20,18 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class UserListFragment : Fragment() {
 
-    @Inject
-    lateinit var followedUsersStore: FollowedUsersStore
+    private val viewModel: UserListViewModel by viewModels()
     private lateinit var adapter: UserListRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val avatar = "https://i.pravatar.cc/128"
-        val items = listOf(
-            User(
-                firstName = "John",
-                lastName = "Doe",
-                avatar = avatar,
-                id = 1,
-                email = "email one"
-            ),
-            User(
-                firstName = "Hane",
-                lastName = "Doe",
-                avatar = avatar,
-                id = 2,
-                email = "email two"
-            ),
-            User(
-                firstName = "Hane",
-                lastName = "Doe",
-                avatar = avatar,
-                id = 3,
-                email = "email two"
-            ),
-            User(
-                firstName = "Hane",
-                lastName = "Doe",
-                avatar = avatar,
-                id = 4,
-                email = "email two"
-            ),
-            User(
-                firstName = "Hane",
-                lastName = "Doe",
-                avatar = avatar,
-                id = 5,
-                email = "email two"
-            ),
-            User(
-                firstName = "Hane",
-                lastName = "Doe",
-                avatar = avatar,
-                id = 6,
-                email = "email two"
-            ),
-            User(
-                firstName = "Jane",
-                lastName = "7",
-                avatar = avatar,
-                id = 7,
-                email = "email two"
-            ),
-            User(
-                firstName = "John",
-                lastName = "8",
-                avatar = avatar,
-                id = 8,
-                email = "email two"
-            ),
-        )
-
-        adapter = UserListRecyclerViewAdapter(
-            store = PreferencesFollowedUsersStore(store = requireActivity().dataStore),
-            items = items,
-            lifecycleScope = lifecycleScope
-        )
+        adapter = UserListRecyclerViewAdapter().also {
+            it.changeUserIsFollowListener =
+                UserListRecyclerViewAdapter.OnChangeUserIsFollowListener(
+                    viewModel::updateUserFollowing
+                )
+        }
     }
 
     override fun onCreateView(
@@ -109,6 +47,15 @@ class UserListFragment : Fragment() {
 
             list.layoutManager = GridLayoutManager(requireContext(), columns)
             list.adapter = adapter
+        }
+
+        if (viewModel.list.value.isEmpty()) {
+            viewModel.loadMore()
+        }
+
+        // Sync ViewModel list with adapter
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.list.collect(adapter::submitList)
         }
     }
 

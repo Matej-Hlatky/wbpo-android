@@ -29,7 +29,7 @@ interface ApiClient {
     fun logout(): Call<Unit>
 
     @GET("users")
-    fun getUsers(@Query("perPage") perPage: Int, @Query("page") page: Int): Call<GetUsersResponse>
+    fun getUsers(@Query("page") page: Int, @Query("per_page") perPage: Int): Call<GetUsersResponse>
 
     @GET("users/{id}")
     fun getUserById(@Path("id") id: Int): Call<User>

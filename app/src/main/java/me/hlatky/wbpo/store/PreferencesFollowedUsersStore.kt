@@ -36,6 +36,7 @@ class PreferencesFollowedUsersStore @Inject constructor(
     }
 
     companion object {
+        // Need to use stringSet, because ntSetPreference isn't provided and Key has internal ctor
         private val KEY = stringSetPreferencesKey("followed_user_ids")
     }
 }

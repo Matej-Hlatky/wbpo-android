@@ -2,24 +2,21 @@ package me.hlatky.wbpo.ui.user.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import me.hlatky.wbpo.R
-import me.hlatky.wbpo.store.FollowedUsersStore
 import me.hlatky.wbpo.databinding.ItemUserBinding
 import me.hlatky.wbpo.model.User
 
 /** [RecyclerView.Adapter] that can display a list of [User]. */
-class UserListRecyclerViewAdapter(
-    private val store: FollowedUsersStore,
-    private val lifecycleScope: CoroutineScope,
-    private val items: List<User>
-) : RecyclerView.Adapter<UserListRecyclerViewAdapter.ViewHolder>() {
+class UserListRecyclerViewAdapter : ListAdapter<User, UserListRecyclerViewAdapter.ViewHolder>(DiffCallback()) {
 
     private val placeholder = R.drawable.shape_avatar_placeholder
+
+    var changeUserIsFollowListener: OnChangeUserIsFollowListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -28,7 +25,7 @@ class UserListRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = items[position]
+        val user = currentList[position]
 
         holder.binding.also {
             it.model = user
@@ -36,8 +33,6 @@ class UserListRecyclerViewAdapter(
             it.setupFollowing(user)
         }
     }
-
-    override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -47,7 +42,6 @@ class UserListRecyclerViewAdapter(
         if (imageUrl.isNullOrEmpty()) {
             avatarImage.setImageResource(placeholder)
         } else {
-            // TODO Cache: https://coil-kt.github.io/coil/image_loaders/
             avatarImage.load(imageUrl) {
                 crossfade(true)
                 placeholder(placeholder)
@@ -58,21 +52,28 @@ class UserListRecyclerViewAdapter(
     }
 
     private fun ItemUserBinding.setupFollowing(user: User) {
-        val userId = user.id ?: return
-
-        // TODO Move logic into ViewModel and separate repository on User
-
-        lifecycleScope.launch {
-            val isFollowed = store.getIsFollowed(userId)
-
-            followToggle.also {
-                it.isChecked = isFollowed
-                it.setOnCheckedChangeListener { _, isChecked ->
-                    lifecycleScope.launch {
-                        if (isChecked) store.followUser(userId) else store.unFollowUser(userId)
-                    }
-                }
+        followToggle.also {
+            // Need to clear the listener before setting to prevent invocation of callback
+            // when row was recycled or just updated
+            it.setOnCheckedChangeListener(null)
+            it.isChecked = user.isFollowed ?: false
+            it.setOnCheckedChangeListener { _, isChecked ->
+                changeUserIsFollowListener?.changeUserIsFollowing(user, isChecked)
+                // TODO This state is not preserved when recycled -> need to refresh source list
+                user.isFollowed = true
             }
         }
+    }
+
+    fun interface OnChangeUserIsFollowListener {
+        fun changeUserIsFollowing(user: User, isFollowing: Boolean)
+    }
+
+    private class DiffCallback : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean =
+            oldItem == newItem
     }
 }
