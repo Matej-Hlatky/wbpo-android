@@ -54,7 +54,8 @@ class UserLoginFragment : Fragment() {
                 state?.fold(
                     onLoadingStart = {
                         view.hideKeyboard()
-                        progressDialog = context?.showProgressDialog(R.string.user_login_progress_message)
+                        progressDialog =
+                            context?.showProgressDialog(R.string.user_login_progress_message)
                     },
                     onLoadingEnd = {
                         progressDialog?.dismiss()
@@ -64,7 +65,12 @@ class UserLoginFragment : Fragment() {
                         activityViewModel.selectRoute(Route.USER_LIST)
                     },
                     onFailure = { error ->
-                        context?.showErrorDialog(message = error.getLocalizedUserFacingMessage(resources))
+                        context?.showErrorDialog(
+                            message = error.getLocalizedUserFacingMessage(resources)
+                        ) {
+                            // clear state by user choice
+                            vm.loginResult.value = null
+                        }
                     }
                 )
             }
@@ -72,7 +78,8 @@ class UserLoginFragment : Fragment() {
                 state?.fold(
                     onLoadingStart = {
                         view.hideKeyboard()
-                        progressDialog = context?.showProgressDialog(R.string.user_register_progress_message)
+                        progressDialog =
+                            context?.showProgressDialog(R.string.user_register_progress_message)
                     },
                     onLoadingEnd = {
                         progressDialog?.dismiss()
@@ -82,7 +89,12 @@ class UserLoginFragment : Fragment() {
                         activityViewModel.selectRoute(Route.USER_LIST)
                     },
                     onFailure = { error ->
-                        context?.showErrorDialog(message = error.getLocalizedUserFacingMessage(resources))
+                        context?.showErrorDialog(
+                            message = error.getLocalizedUserFacingMessage(resources)
+                        ) {
+                            // clear state by user choice
+                            vm.loginResult.value = null
+                        }
                     }
                 )
             }
