@@ -62,8 +62,7 @@
                 android:layout_alignParentEnd="true"
                 android:button="@drawable/selector_toggle_favorite_24"
                 android:tooltipText="@string/user_follow_label"
-                app:buttonTint="@android:color/black"
-                tools:button="@drawable/ic_user_follow_24"
+                app:buttonTint="?attr/android:textColorPrimary"
                 tools:ignore="UnusedAttribute" />
 
             <TextView
