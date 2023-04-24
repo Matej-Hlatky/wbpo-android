@@ -3,11 +3,11 @@ package me.hlatky.wbpo.store
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.hlatky.wbpo.model.UserSession
+import me.hlatky.wbpo.util.getEncryptedSharedPreferences
 import javax.inject.Inject
 
 /** [UserSessionStore] build using [SharedPreferences]. */
@@ -15,8 +15,7 @@ class PreferencesUserSessionStore @Inject constructor(
     @ApplicationContext context: Context
 ) : UserSessionStore {
 
-    // TODO Consider using EncryptedSharedPreferences
-    private val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val sp: SharedPreferences = context.getEncryptedSharedPreferences("user_session")
 
     override var value: UserSession?
         get() {

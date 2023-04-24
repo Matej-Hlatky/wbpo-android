@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import me.hlatky.wbpo.BuildConfig
 import me.hlatky.wbpo.client.ApiClient
 import me.hlatky.wbpo.client.ApiClientFactory
-import me.hlatky.wbpo.dataStore
+import me.hlatky.wbpo.util.dataStore
 import me.hlatky.wbpo.repo.UserRepository
 import me.hlatky.wbpo.repo.UserRepositoryImpl
 import me.hlatky.wbpo.store.FollowedUsersStore
@@ -31,6 +31,7 @@ class ClientModule {
         ApiClientFactory.create(BuildConfig.API_ENDPOINT, BuildConfig.DEBUG)
 }
 
+@Suppress("unused")
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
