@@ -13,7 +13,7 @@ class MainViewModel @Inject constructor(
     userRepository: UserRepository,
 ) : ViewModel() {
 
-    private val _initialRoute = if ((userRepository.userSession?.id ?: -1) == -1) Route.USER_LOGIN else Route.USER_LIST
+    private val _initialRoute = if (userRepository.userSession?.token.isNullOrEmpty()) Route.USER_LOGIN else Route.USER_LIST
     private val _selectedRoute = MutableLiveData(_initialRoute)
 
     val selectedRoute: LiveData<Route> =
