@@ -8,16 +8,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import me.hlatky.wbpo.R
-import me.hlatky.wbpo.data.PreferencesFollowedUsersStore
+import me.hlatky.wbpo.store.PreferencesFollowedUsersStore
 import me.hlatky.wbpo.dataStore
 import me.hlatky.wbpo.model.User
+import me.hlatky.wbpo.store.FollowedUsersStore
+import javax.inject.Inject
 
 /**
  * A fragment representing a list of [User].
  */
+@AndroidEntryPoint
 class UserListFragment : Fragment() {
 
+    @Inject
+    lateinit var followedUsersStore: FollowedUsersStore
     private lateinit var adapter: UserListRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

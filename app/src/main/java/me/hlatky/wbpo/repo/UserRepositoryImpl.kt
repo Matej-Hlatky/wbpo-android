@@ -5,9 +5,10 @@ import me.hlatky.wbpo.model.UserLoginRequest
 import me.hlatky.wbpo.model.UserRegisterRequest
 import me.hlatky.wbpo.model.User
 import retrofit2.await
+import javax.inject.Inject
 
 /** [UserRepository] that uses [ApiClient]. */
-class UserRepositoryImpl(
+class UserRepositoryImpl @Inject constructor(
     private val apiClient: ApiClient
 ) : UserRepository {
 
@@ -18,6 +19,8 @@ class UserRepositoryImpl(
     override suspend fun login(email: String, password: String): String = apiClient
         .login(UserLoginRequest(username = email, email = email, password = password))
         .await().token
+    //         val response = repository.login(email, password)
+    //        // TODO Store access TOKEN
 
     override suspend fun logout() =
         apiClient.logout().await()

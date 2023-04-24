@@ -1,4 +1,4 @@
-package me.hlatky.wbpo.data
+package me.hlatky.wbpo.store
 
 interface FollowedUsersStore {
 

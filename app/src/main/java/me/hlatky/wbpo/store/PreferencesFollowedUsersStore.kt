@@ -1,4 +1,4 @@
-package me.hlatky.wbpo.data
+package me.hlatky.wbpo.store
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -6,9 +6,10 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 /** [FollowedUsersStore] implementation that uses [DataStore]. */
-class PreferencesFollowedUsersStore(
+class PreferencesFollowedUsersStore @Inject constructor(
     private val store: DataStore<Preferences>
 ) : FollowedUsersStore {
 

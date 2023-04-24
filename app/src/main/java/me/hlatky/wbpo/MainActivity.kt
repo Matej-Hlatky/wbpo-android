@@ -12,8 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import me.hlatky.wbpo.ui.user.login.UserLoginFragment
 import me.hlatky.wbpo.ui.user.list.UserListFragment
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
