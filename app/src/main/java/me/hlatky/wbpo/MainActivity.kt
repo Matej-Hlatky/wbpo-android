@@ -8,12 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import me.hlatky.wbpo.ui.user.login.UserLoginFragment
 import me.hlatky.wbpo.ui.user.list.UserListFragment
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    //lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     private val viewModel: MainViewModel by viewModels()
 

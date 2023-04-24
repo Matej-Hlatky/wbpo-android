@@ -4,11 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.distinctUntilChanged
+import dagger.hilt.android.lifecycle.HiltViewModel
+import me.hlatky.wbpo.repo.UserRepository
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    userRepository: UserRepository,
+) : ViewModel() {
 
-    // TODO Determine it - check if is logged-in or have token
-    private val _selectedRoute = MutableLiveData(Route.USER_LOGIN)
+    private val _initialRoute = if ((userRepository.userSession?.id ?: -1) == -1) Route.USER_LOGIN else Route.USER_LIST
+    private val _selectedRoute = MutableLiveData(_initialRoute)
 
     val selectedRoute: LiveData<Route> =
         _selectedRoute.distinctUntilChanged()

@@ -17,6 +17,8 @@ import me.hlatky.wbpo.repo.UserRepository
 import me.hlatky.wbpo.repo.UserRepositoryImpl
 import me.hlatky.wbpo.store.FollowedUsersStore
 import me.hlatky.wbpo.store.PreferencesFollowedUsersStore
+import me.hlatky.wbpo.store.PreferencesUserSessionStore
+import me.hlatky.wbpo.store.UserSessionStore
 import javax.inject.Singleton
 
 @Module
@@ -55,4 +57,8 @@ abstract class StoreModule {
     @Binds
     @Singleton
     abstract fun bindFollowedUsersStore(impl: PreferencesFollowedUsersStore): FollowedUsersStore
+
+    @Binds
+    @Singleton
+    abstract fun bindUserSessionStore(impl: PreferencesUserSessionStore): UserSessionStore
 }
