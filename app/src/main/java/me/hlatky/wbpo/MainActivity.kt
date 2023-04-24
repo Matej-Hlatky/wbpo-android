@@ -1,22 +1,15 @@
 package me.hlatky.wbpo
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
-import me.hlatky.wbpo.ui.user.login.UserLoginFragment
 import me.hlatky.wbpo.ui.user.list.UserListFragment
+import me.hlatky.wbpo.ui.user.login.UserLoginFragment
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    //lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -34,6 +27,13 @@ class MainActivity : AppCompatActivity() {
     private fun onRouteChanged(route: Route) {
         Log.d(TAG, "onRouteChanged: route=${route.name}")
 
+        // Prevent "navigation" to itself on orientation change
+        // or we can store last Route into savedInstanceState
+        val fragmentTag = route.name
+
+        if (supportFragmentManager.findFragmentByTag(fragmentTag) != null)
+            return
+
         val fragment = when (route) {
             Route.USER_LOGIN -> UserLoginFragment.newInstance()
             Route.USER_LIST -> UserListFragment.newInstance()
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            .replace(R.id.container, fragment)
+            .replace(R.id.container, fragment, fragmentTag)
             .commitNow()
     }
 
