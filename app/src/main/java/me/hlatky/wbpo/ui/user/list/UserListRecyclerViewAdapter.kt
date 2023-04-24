@@ -7,20 +7,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import me.hlatky.wbpo.R
 import me.hlatky.wbpo.databinding.ItemUserBinding
 import me.hlatky.wbpo.model.User
-import me.hlatky.wbpo.store.FollowedUsersStore
 
 /** [RecyclerView.Adapter] that can display a list of [User]. */
-class UserListRecyclerViewAdapter(
-    private val store: FollowedUsersStore,
-    private val coroutineScope: CoroutineScope,
-) : ListAdapter<User, UserListRecyclerViewAdapter.ViewHolder>(DiffCallback()) {
+class UserListRecyclerViewAdapter : ListAdapter<User, UserListRecyclerViewAdapter.ViewHolder>(DiffCallback()) {
 
     private val placeholder = R.drawable.shape_avatar_placeholder
+
+    var changeUserIsFollowListener: OnChangeUserIsFollowListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -46,7 +42,6 @@ class UserListRecyclerViewAdapter(
         if (imageUrl.isNullOrEmpty()) {
             avatarImage.setImageResource(placeholder)
         } else {
-            // TODO Cache: https://coil-kt.github.io/coil/image_loaders/
             avatarImage.load(imageUrl) {
                 crossfade(true)
                 placeholder(placeholder)
@@ -57,22 +52,21 @@ class UserListRecyclerViewAdapter(
     }
 
     private fun ItemUserBinding.setupFollowing(user: User) {
-        val userId = user.id ?: return
-
-        // TODO Move logic into ViewModel and separate repository on User
-
-        coroutineScope.launch {
-            val isFollowed = store.getIsFollowed(userId)
-
-            followToggle.also {
-                it.isChecked = isFollowed
-                it.setOnCheckedChangeListener { _, isChecked ->
-                    coroutineScope.launch {
-                        if (isChecked) store.followUser(userId) else store.unFollowUser(userId)
-                    }
-                }
+        followToggle.also {
+            // Need to clear the listener before setting to prevent invocation of callback
+            // when row was recycled or just updated
+            it.setOnCheckedChangeListener(null)
+            it.isChecked = user.isFollowed ?: false
+            it.setOnCheckedChangeListener { _, isChecked ->
+                changeUserIsFollowListener?.changeUserIsFollowing(user, isChecked)
+                // TODO This state is not preserved when recycled -> need to refresh source list
+                user.isFollowed = true
             }
         }
+    }
+
+    fun interface OnChangeUserIsFollowListener {
+        fun changeUserIsFollowing(user: User, isFollowing: Boolean)
     }
 
     private class DiffCallback : DiffUtil.ItemCallback<User>() {

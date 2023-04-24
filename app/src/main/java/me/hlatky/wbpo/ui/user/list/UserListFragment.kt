@@ -12,11 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import me.hlatky.wbpo.R
-import me.hlatky.wbpo.store.PreferencesFollowedUsersStore
-import me.hlatky.wbpo.dataStore
 import me.hlatky.wbpo.model.User
-import me.hlatky.wbpo.store.FollowedUsersStore
-import javax.inject.Inject
 
 /**
  * A fragment representing a list of [User].
@@ -25,18 +21,17 @@ import javax.inject.Inject
 class UserListFragment : Fragment() {
 
     private val viewModel: UserListViewModel by viewModels()
-
-    @Inject
-    lateinit var followedUsersStore: FollowedUsersStore
     private lateinit var adapter: UserListRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        adapter = UserListRecyclerViewAdapter(
-            store = PreferencesFollowedUsersStore(store = requireActivity().dataStore),
-            coroutineScope = lifecycleScope
-        )
+        adapter = UserListRecyclerViewAdapter().also {
+            it.changeUserIsFollowListener =
+                UserListRecyclerViewAdapter.OnChangeUserIsFollowListener(
+                    viewModel::updateUserFollowing
+                )
+        }
     }
 
     override fun onCreateView(

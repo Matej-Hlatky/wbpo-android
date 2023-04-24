@@ -16,4 +16,6 @@ interface UserRepository {
     suspend fun logout()
 
     suspend fun getList(page: Int, perPage: Int): GetUsersResponse
+
+    suspend fun updateUserFollowing(user: User, isFollowing: Boolean)
 }
