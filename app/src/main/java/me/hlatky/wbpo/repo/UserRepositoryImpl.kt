@@ -1,7 +1,7 @@
 package me.hlatky.wbpo.repo
 
 import me.hlatky.wbpo.client.ApiClient
-import me.hlatky.wbpo.model.User
+import me.hlatky.wbpo.model.GetUsersResponse
 import me.hlatky.wbpo.model.UserLoginRequest
 import me.hlatky.wbpo.model.UserRegisterRequest
 import me.hlatky.wbpo.model.UserSession
@@ -44,6 +44,6 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAll(page: Int, perPage: Int): List<User> =
-        apiClient.getUsers(perPage, page).awaitResponse().getOrThrow().data
+    override suspend fun getAll(page: Int, perPage: Int): GetUsersResponse =
+        apiClient.getUsers(perPage, page).awaitResponse().getOrThrow()
 }

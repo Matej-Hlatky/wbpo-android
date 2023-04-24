@@ -2,22 +2,23 @@ package me.hlatky.wbpo.ui.user.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.hlatky.wbpo.R
-import me.hlatky.wbpo.store.FollowedUsersStore
 import me.hlatky.wbpo.databinding.ItemUserBinding
 import me.hlatky.wbpo.model.User
+import me.hlatky.wbpo.store.FollowedUsersStore
 
 /** [RecyclerView.Adapter] that can display a list of [User]. */
 class UserListRecyclerViewAdapter(
     private val store: FollowedUsersStore,
-    private val lifecycleScope: CoroutineScope,
-    private val items: List<User>
-) : RecyclerView.Adapter<UserListRecyclerViewAdapter.ViewHolder>() {
+    private val coroutineScope: CoroutineScope,
+) : ListAdapter<User, UserListRecyclerViewAdapter.ViewHolder>(DiffCallback()) {
 
     private val placeholder = R.drawable.shape_avatar_placeholder
 
@@ -28,7 +29,7 @@ class UserListRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = items[position]
+        val user = currentList[position]
 
         holder.binding.also {
             it.model = user
@@ -36,8 +37,6 @@ class UserListRecyclerViewAdapter(
             it.setupFollowing(user)
         }
     }
-
-    override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -62,17 +61,25 @@ class UserListRecyclerViewAdapter(
 
         // TODO Move logic into ViewModel and separate repository on User
 
-        lifecycleScope.launch {
+        coroutineScope.launch {
             val isFollowed = store.getIsFollowed(userId)
 
             followToggle.also {
                 it.isChecked = isFollowed
                 it.setOnCheckedChangeListener { _, isChecked ->
-                    lifecycleScope.launch {
+                    coroutineScope.launch {
                         if (isChecked) store.followUser(userId) else store.unFollowUser(userId)
                     }
                 }
             }
         }
+    }
+
+    private class DiffCallback : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean =
+            oldItem == newItem
     }
 }

@@ -9,6 +9,6 @@ data class User(
     @SerializedName("last_name") val lastName: String?,
     val avatar: String?,
 ) {
-    val fullName: String =
-        listOf(firstName, "", lastName).joinToString(separator = " ").trim()
+    val fullName: String
+        get() = listOf(firstName, lastName).joinToString(separator = " ").trim()
 }

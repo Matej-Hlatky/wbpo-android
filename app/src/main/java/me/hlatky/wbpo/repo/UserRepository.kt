@@ -1,5 +1,6 @@
 package me.hlatky.wbpo.repo
 
+import me.hlatky.wbpo.model.GetUsersResponse
 import me.hlatky.wbpo.model.User
 import me.hlatky.wbpo.model.UserSession
 
@@ -14,6 +15,5 @@ interface UserRepository {
 
     suspend fun logout()
 
-    // TODO Return GetUsersResponse?
-    suspend fun getAll(page: Int, perPage: Int): List<User>
+    suspend fun getAll(page: Int, perPage: Int): GetUsersResponse
 }
