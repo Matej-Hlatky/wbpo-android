@@ -6,7 +6,7 @@ plugins {
 
 ext {
     ext.retrofit_version = '2.9.0' // https://github.com/square/retrofit/tags
-    ext.okhttp_version = '3.12.11' // https://github.com/square/okhttp/tags
+    ext.okhttp_version = '4.11.0' // https://github.com/square/okhttp/tags
 }
 
 

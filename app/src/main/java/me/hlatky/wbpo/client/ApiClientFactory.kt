@@ -14,7 +14,7 @@ object ApiClientFactory {
     /**
      * Creates HTTP REST client for [ApiClient].
      *
-     * @param endpoint The service endpoint base URL address, like "https://api.com" without ending '/'.
+     * @param endpoint The service endpoint base URL address, like "https://api.com/api/" with ending '/'.
      * @param isDebug Debug flag - affects logging level.
      *
      * @return The client.

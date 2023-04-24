@@ -2,13 +2,14 @@ package me.hlatky.wbpo.ui.user
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.delay
+import me.hlatky.wbpo.repo.UserRepository
 import me.hlatky.wbpo.ui.UIState
 import me.hlatky.wbpo.ui.invokeAction
-import java.io.IOException
 
 /** [ViewModel] for the [UserLoginFragment] that provides user login / register functionality. */
-class UserLoginViewModel : ViewModel() {
+class UserLoginViewModel(
+    private val repository: UserRepository
+) : ViewModel() {
 
     /** Flag to switch between login / registration state. */
     val registrationNeeded = MutableLiveData(false)
@@ -42,13 +43,16 @@ class UserLoginViewModel : ViewModel() {
     }
 
     private suspend fun login() {
-        // TODO Implement login
-        delay(150)
+        val email = email.value.orEmpty()
+        val password = password.value.orEmpty()
+        val response = repository.login(email, password)
+        // TODO Store access TOKEN
     }
 
     private suspend fun register() {
-        // TODO Implement register
-        delay(250)
-        throw IOException("Some technical error")
+        val email = email.value.orEmpty()
+        val password = password.value.orEmpty()
+        val response = repository.register(email, password)
+        // TODO Store User ID and access TOKEN
     }
 }
