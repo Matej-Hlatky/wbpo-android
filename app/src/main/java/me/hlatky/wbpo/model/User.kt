@@ -1,13 +1,14 @@
 package me.hlatky.wbpo.model
 
-// TODO JSON attr mapping
+import com.google.gson.annotations.SerializedName
+
 data class User(
     val id: Int?,
     val email: String?,
-    val firstName: String?, // first_name
-    val lastName: String?, // last_name
-    val avatar: String?, // last_name
+    @SerializedName("first_name") val firstName: String?,
+    @SerializedName("last_name") val lastName: String?,
+    val avatar: String?,
 ) {
     val fullName: String =
-        listOf(firstName, "", lastName).joinToString(separator = " ")
+        listOf(firstName, "", lastName).joinToString(separator = " ").trim()
 }

@@ -3,6 +3,13 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+
+ext {
+    ext.retrofit_version = '2.9.0' // https://github.com/square/retrofit/tags
+    ext.okhttp_version = '4.11.0' // https://github.com/square/okhttp/tags
+}
+
+
 android {
     namespace 'me.hlatky.wbpo'
     compileSdk 33
@@ -15,6 +22,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "API_ENDPOINT", "\"https://reqres.in/api/\""
     }
 
     buildTypes {
@@ -48,6 +57,11 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'io.coil-kt:coil:2.3.0'
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     testImplementation 'junit:junit:4.13.2'
 

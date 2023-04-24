@@ -13,17 +13,17 @@ import me.hlatky.wbpo.Intents
 import me.hlatky.wbpo.MainViewModel
 import me.hlatky.wbpo.R
 import me.hlatky.wbpo.Route
-import me.hlatky.wbpo.databinding.FragmentLoginBinding
+import me.hlatky.wbpo.databinding.FragmentUserLoginBinding
 import me.hlatky.wbpo.ui.showErrorDialog
 import me.hlatky.wbpo.ui.showProgressDialog
 import me.hlatky.wbpo.util.getLocalizedUserFacingMessage
 import me.hlatky.wbpo.util.hideKeyboard
 
-class LoginFragment : Fragment() {
+class UserLoginFragment : Fragment() {
 
-    private val viewModel: LoginViewModel by viewModels()
+    private val viewModel: UserLoginViewModel by viewModels()
     private val activityViewModel: MainViewModel by activityViewModels()
-    private lateinit var binding: FragmentLoginBinding
+    private lateinit var binding: FragmentUserLoginBinding
 
     private var progressDialog: DialogInterface? = null
 
@@ -31,7 +31,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentLoginBinding.inflate(inflater, container, false).also {
+    ): View = FragmentUserLoginBinding.inflate(inflater, container, false).also {
         binding = it
     }.root
 
@@ -95,6 +95,6 @@ class LoginFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = LoginFragment()
+        fun newInstance() = UserLoginFragment()
     }
 }
