@@ -6,4 +6,7 @@ import me.hlatky.wbpo.model.UserSession
 interface UserSessionStore {
 
     var value: UserSession?
+
+    // TODO StateFlow<>
+    // + updateValue()
 }

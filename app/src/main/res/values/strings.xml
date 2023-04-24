@@ -1,6 +1,7 @@
 <resources>
     <!-- App -->
 	<string name="app_name">WBPO app</string>
+    <string name="action_logout_title">Logout</string>
 
     <!-- Generic -->
     <string name="dialog_ok">@android:string/ok</string>

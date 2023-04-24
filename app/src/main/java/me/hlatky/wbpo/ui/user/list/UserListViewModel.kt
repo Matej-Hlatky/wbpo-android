@@ -10,13 +10,15 @@ import kotlinx.coroutines.launch
 import me.hlatky.wbpo.model.User
 import me.hlatky.wbpo.repo.UserRepository
 import me.hlatky.wbpo.store.FollowedUsersStore
+import me.hlatky.wbpo.store.UserSessionStore
 import javax.inject.Inject
 
 /** [ViewModel] for the [UserListFragment] that provides list of [User]. */
 @HiltViewModel
 class UserListViewModel @Inject constructor(
     private val repository: UserRepository,
-    private val followedUsersStore: FollowedUsersStore
+    private val followedUsersStore: FollowedUsersStore,
+    private val userSessionStore: UserSessionStore
 ) : ViewModel() {
 
     // TODO Use AndroidX Paging library
@@ -46,5 +48,9 @@ class UserListViewModel @Inject constructor(
             else
                 followedUsersStore.unFollowUser(user.id)
         }
+    }
+
+    fun clearUserSession() {
+        userSessionStore.value = null
     }
 }
