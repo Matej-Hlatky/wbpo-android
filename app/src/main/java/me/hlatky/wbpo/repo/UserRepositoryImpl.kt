@@ -27,7 +27,7 @@ class UserRepositoryImpl @Inject constructor(
             .awaitResponse()
             .getOrThrow()
             .also {
-                userSession = UserSession(token = it.token)
+                userSession = UserSession(userId = it.id, token = it.token)
             }
     }
 
