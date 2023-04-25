@@ -6,6 +6,7 @@
     <!-- Generic -->
     <string name="dialog_ok">@android:string/ok</string>
     <string name="dialog_cancel">@android:string/cancel</string>
+    <string name="dialog_retry">Retry</string>
     <string name="dialog_error_title">Error 😢</string>
 
     <string name="error_generic_message">There has been an error: \n%1$s</string>

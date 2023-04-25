@@ -17,13 +17,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import me.hlatky.wbpo.MainViewModel
 import me.hlatky.wbpo.R
 import me.hlatky.wbpo.Route
 import me.hlatky.wbpo.model.User
-import me.hlatky.wbpo.ui.showErrorDialog
 import me.hlatky.wbpo.util.getLocalizedUserFacingMessage
 import me.hlatky.wbpo.util.setupToolbar
 
@@ -90,9 +90,15 @@ class UserListFragment : Fragment() {
     }
 
     private fun onLoadError(error: Throwable) {
-        context?.showErrorDialog(message = error.getLocalizedUserFacingMessage(resources)) {
-            adapter.retry()
-        }
+        val errorText = error.getLocalizedUserFacingMessage(resources)
+
+        // Using Snackbar intentionally for different UX than AlertDialog
+        Snackbar
+            .make(requireView(), errorText, Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.dialog_retry) {
+                adapter.retry()
+            }
+            .show()
     }
 
     private fun requestLogout() {
