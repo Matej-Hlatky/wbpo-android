@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +23,8 @@ import me.hlatky.wbpo.MainViewModel
 import me.hlatky.wbpo.R
 import me.hlatky.wbpo.Route
 import me.hlatky.wbpo.model.User
+import me.hlatky.wbpo.ui.showErrorDialog
+import me.hlatky.wbpo.util.getLocalizedUserFacingMessage
 import me.hlatky.wbpo.util.setupToolbar
 
 /**
@@ -67,13 +70,28 @@ class UserListFragment : Fragment() {
             val columns = resources.getInteger(R.integer.user_grid_columns)
 
             list.layoutManager = GridLayoutManager(requireContext(), columns)
-            list.adapter = adapter
-            // TODO Try withLoadStateHeaderAndFooter for footer and header
+            list.adapter = adapter.also {
+                it.addLoadStateListener { states ->
+                    val firstError =
+                        (states.append as? LoadState.Error) ?: (states.prepend as? LoadState.Error)
+
+                    if (firstError != null) {
+                        onLoadError(firstError.error)
+                    }
+                }
+                // TODO Try withLoadStateHeaderAndFooter for footer and header
+            }
         }
 
         // Sync ViewModel list with adapter
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.list.collect(adapter::submitData)
+        }
+    }
+
+    private fun onLoadError(error: Throwable) {
+        context?.showErrorDialog(message = error.getLocalizedUserFacingMessage(resources)) {
+            adapter.retry()
         }
     }
 
