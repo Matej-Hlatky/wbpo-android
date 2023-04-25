@@ -27,7 +27,7 @@ class UserListPagingSource(
 
         return LoadResult.Page(
             data = data,
-            prevKey = if (page == 1) null else -1,
+            prevKey = if (page == 1) null else page - 1,
             nextKey = if (page < totalPages) page + 1 else null,
             itemsAfter = itemsAfter,
         )
