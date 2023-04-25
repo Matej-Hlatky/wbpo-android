@@ -8,7 +8,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 
-
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 fun Context.getEncryptedSharedPreferences(fileName: String): SharedPreferences =
@@ -20,3 +19,5 @@ fun Context.getEncryptedSharedPreferences(fileName: String): SharedPreferences =
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
+inline fun <reified T> Context.provideService(): T =
+    getSystemService(T::class.java)

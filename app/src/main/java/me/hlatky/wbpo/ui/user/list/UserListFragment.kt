@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +25,10 @@ import me.hlatky.wbpo.MainViewModel
 import me.hlatky.wbpo.R
 import me.hlatky.wbpo.Route
 import me.hlatky.wbpo.model.User
+import me.hlatky.wbpo.util.NetworkStatusTracker
+import me.hlatky.wbpo.util.NetworkStatusTracker.Status.Available
 import me.hlatky.wbpo.util.getLocalizedUserFacingMessage
+import me.hlatky.wbpo.util.provideService
 import me.hlatky.wbpo.util.setupToolbar
 
 /**
@@ -36,6 +40,8 @@ class UserListFragment : Fragment() {
     private val viewModel: UserListViewModel by viewModels()
     private val activityViewModel: MainViewModel by activityViewModels()
     private lateinit var adapter: UserListAdapter
+    private lateinit var networkStatusTracker: NetworkStatusTracker
+    private var loadErrorSnackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +52,7 @@ class UserListFragment : Fragment() {
                     viewModel::updateUserFollowing
                 )
         }
+        networkStatusTracker = NetworkStatusTracker(requireContext().provideService())
     }
 
     override fun onCreateView(
@@ -77,15 +84,25 @@ class UserListFragment : Fragment() {
 
                     if (firstError != null) {
                         onLoadError(firstError.error)
+                    } else {
+                        loadErrorSnackbar = null
                     }
                 }
                 // TODO Try withLoadStateHeaderAndFooter for footer and header
             }
         }
 
-        // Sync ViewModel list with adapter
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.list.collect(adapter::submitData)
+        viewLifecycleOwner.lifecycleScope.also { scope ->
+            scope.launch {
+                // Sync ViewModel list with adapter
+                viewModel.list.collect(adapter::submitData)
+            }
+            scope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    // Observe Network status
+                    networkStatusTracker.observe().collect(::onNetworkStatusChanged)
+                }
+            }
         }
     }
 
@@ -97,8 +114,21 @@ class UserListFragment : Fragment() {
             .make(requireView(), errorText, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.dialog_retry) {
                 adapter.retry()
+            }.also {
+                loadErrorSnackbar = it
             }
             .show()
+    }
+
+    private fun onNetworkStatusChanged(status: NetworkStatusTracker.Status) {
+        // Auto retry when have Internet again
+        if (status == Available) {
+            if (loadErrorSnackbar != null) {
+                loadErrorSnackbar?.dismiss()
+                loadErrorSnackbar = null
+                adapter.retry()
+            }
+        }
     }
 
     private fun requestLogout() {
