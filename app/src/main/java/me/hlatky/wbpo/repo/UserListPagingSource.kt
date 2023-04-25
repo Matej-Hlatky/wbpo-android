@@ -11,10 +11,21 @@ class UserListPagingSource(
 ) : PagingSource<Int, User>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, User> {
-        val currentPage = params.key ?: 1
+        val pageSize = params.loadSize
+        val currentPage = params.key ?: 0
+        // Using page "0" as hack to display placeholders asap
+
+        if (currentPage == 0) {
+            return LoadResult.Page(
+                data = emptyList(),
+                prevKey = null,
+                nextKey = 1,
+                itemsAfter = pageSize,
+            )
+        }
 
         return try {
-            repository.getList(currentPage, params.loadSize).asPage(pageSize = params.loadSize)
+            repository.getList(currentPage, params.loadSize).asPage(pageSize)
         } catch (error: Throwable) {
             LoadResult.Error(error)
         }

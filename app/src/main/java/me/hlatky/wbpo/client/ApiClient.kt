@@ -28,7 +28,7 @@ interface ApiClient {
     @POST("logout")
     fun logout(): Call<Unit>
 
-    @GET("users")
+    @GET("users?delay=2")
     fun getUsers(@Query("page") page: Int, @Query("per_page") perPage: Int): Call<GetUsersResponse>
 
     @GET("users/{id}")

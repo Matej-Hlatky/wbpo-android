@@ -32,14 +32,14 @@ class UserListFragment : Fragment() {
 
     private val viewModel: UserListViewModel by viewModels()
     private val activityViewModel: MainViewModel by activityViewModels()
-    private lateinit var adapter: UserListRecyclerViewAdapter
+    private lateinit var adapter: UserListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        adapter = UserListRecyclerViewAdapter().also {
+        adapter = UserListAdapter().also {
             it.changeUserIsFollowListener =
-                UserListRecyclerViewAdapter.OnChangeUserIsFollowListener(
+                UserListAdapter.OnChangeUserIsFollowListener(
                     viewModel::updateUserFollowing
                 )
         }
@@ -68,6 +68,7 @@ class UserListFragment : Fragment() {
 
             list.layoutManager = GridLayoutManager(requireContext(), columns)
             list.adapter = adapter
+            // TODO Try withLoadStateHeaderAndFooter for footer and header
         }
 
         // Sync ViewModel list with adapter

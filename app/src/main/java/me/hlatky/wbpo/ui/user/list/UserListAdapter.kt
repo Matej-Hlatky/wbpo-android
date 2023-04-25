@@ -13,8 +13,7 @@ import me.hlatky.wbpo.databinding.ItemUserBinding
 import me.hlatky.wbpo.model.User
 
 /** [RecyclerView.Adapter] that can display a list of [User]. */
-class UserListRecyclerViewAdapter :
-    PagingDataAdapter<User, UserListRecyclerViewAdapter.ViewHolder>(DiffCallback()) {
+class UserListAdapter : PagingDataAdapter<User, UserListAdapter.ViewHolder>(DiffCallback()) {
 
     private val placeholder = R.drawable.shape_avatar_placeholder
 
