@@ -1,0 +1,30 @@
+<resources>
+    <!-- App -->
+	<string name="app_name">WBPO app</string>
+    <string name="action_logout_title">Logout</string>
+
+    <!-- Generic -->
+    <string name="dialog_ok">@android:string/ok</string>
+    <string name="dialog_cancel">@android:string/cancel</string>
+    <string name="dialog_retry">Retry</string>
+    <string name="dialog_error_title">Error 😢</string>
+
+    <string name="error_generic_message">There has been an error: \n%1$s</string>
+    <string name="error_internet_message">Make sure you have stable Internet connection and repeat this action again.\n\n%1$s</string>
+
+    <!-- User -->
+    <string name="user_email_hint">E-mail</string>
+    <string name="user_password_hint">Password</string>
+
+    <string name="user_login_label">Log-in</string>
+    <string name="user_login_progress_message">Logging you in. Please wait…</string>
+    <string name="user_login_option_label">Login with existing account</string>
+
+    <string name="user_register_option_label">Register new account</string>
+    <string name="user_register_label">Register</string>
+    <string name="user_register_progress_message">You are being registered.\nPlease wait…</string>
+    <string name="user_register_success_message">Your new account has been registered 🙌.</string>
+
+    <string name="user_terms_label">Terms and Conditions and Privacy Policy</string>
+    <string name="user_terms_url">https://google.com</string>
+</resources>

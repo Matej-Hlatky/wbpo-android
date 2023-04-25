@@ -1,0 +1,96 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
+}
+
+ext {
+    ext.retrofit_version = '2.9.0' // https://github.com/square/retrofit/tags
+    ext.okhttp_version = '4.11.0' // https://github.com/square/okhttp/tags
+    ext.hilt_version = '2.45' // https://github.com/google/dagger/releases
+    ext.paging_version = '3.1.1' // https://github.com/google/dagger/releases
+}
+
+android {
+    namespace 'me.hlatky.wbpo'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "me.hlatky.wbpo"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "API_ENDPOINT", "\"https://reqres.in/api/\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        dataBinding true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    // AndroidX core libs
+    implementation 'androidx.fragment:fragment-ktx:1.5.7'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    // MVVM
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+
+    // Preferences
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'androidx.security:security-crypto:1.0.0'
+
+    // Material
+    implementation 'com.google.android.material:material:1.8.0'
+
+    // Coil
+    implementation 'io.coil-kt:coil:2.3.0'
+
+    // Retrofit and OK HTTP
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    //noinspection GradleDependency
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    //noinspection GradleDependency
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    // Hilt DI
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    // Paging
+    implementation "androidx.paging:paging-common-ktx:$paging_version"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
+    testImplementation 'junit:junit:4.13.2'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
+}
