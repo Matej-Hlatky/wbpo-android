@@ -14,7 +14,7 @@ class UserListPagingSource(
         val currentPage = params.key ?: 1
 
         return try {
-            repository.getList(currentPage, params.loadSize).asPage()
+            repository.getList(currentPage, params.loadSize).asPage(pageSize = params.loadSize)
         } catch (error: Throwable) {
             LoadResult.Error(error)
         }
@@ -22,9 +22,14 @@ class UserListPagingSource(
 
     override fun getRefreshKey(state: PagingState<Int, User>): Int? = null
 
-    private fun GetUsersResponse.asPage(): LoadResult.Page<Int, User> = LoadResult.Page(
-        data = data,
-        prevKey = if (page == 1) null else -1,
-        nextKey = if (page < totalPages) page + 1 else null
-    )
+    private fun GetUsersResponse.asPage(pageSize: Int): LoadResult.Page<Int, User> {
+        val itemsAfter = total - page * pageSize
+
+        return LoadResult.Page(
+            data = data,
+            prevKey = if (page == 1) null else -1,
+            nextKey = if (page < totalPages) page + 1 else null,
+            itemsAfter = itemsAfter,
+        )
+    }
 }

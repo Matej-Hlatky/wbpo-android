@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import coil.dispose
 import coil.load
 import coil.transform.CircleCropTransformation
 import me.hlatky.wbpo.R
@@ -12,7 +13,8 @@ import me.hlatky.wbpo.databinding.ItemUserBinding
 import me.hlatky.wbpo.model.User
 
 /** [RecyclerView.Adapter] that can display a list of [User]. */
-class UserListRecyclerViewAdapter : PagingDataAdapter<User, UserListRecyclerViewAdapter.ViewHolder>(DiffCallback()) {
+class UserListRecyclerViewAdapter :
+    PagingDataAdapter<User, UserListRecyclerViewAdapter.ViewHolder>(DiffCallback()) {
 
     private val placeholder = R.drawable.shape_avatar_placeholder
 
@@ -25,7 +27,7 @@ class UserListRecyclerViewAdapter : PagingDataAdapter<User, UserListRecyclerView
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = getItem(position) ?: return
+        val user = getItem(position) // this can be null -> Placeholder
 
         holder.binding.also {
             it.model = user
@@ -36,10 +38,11 @@ class UserListRecyclerViewAdapter : PagingDataAdapter<User, UserListRecyclerView
 
     inner class ViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root)
 
-    private fun ItemUserBinding.setAvatar(user: User) {
-        val imageUrl = user.avatar
+    private fun ItemUserBinding.setAvatar(user: User?) {
+        val imageUrl = user?.avatar
 
         if (imageUrl.isNullOrEmpty()) {
+            avatarImage.dispose()
             avatarImage.setImageResource(placeholder)
         } else {
             avatarImage.load(imageUrl) {
@@ -51,16 +54,18 @@ class UserListRecyclerViewAdapter : PagingDataAdapter<User, UserListRecyclerView
         }
     }
 
-    private fun ItemUserBinding.setupFollowing(user: User) {
-        followToggle.also {
-            // Need to clear the listener before setting to prevent invocation of callback
-            // when row was recycled or just updated
-            it.setOnCheckedChangeListener(null)
-            it.isChecked = user.isFollowed ?: false
-            it.setOnCheckedChangeListener { _, isChecked ->
-                changeUserIsFollowListener?.changeUserIsFollowing(user, isChecked)
-                // TODO This state is not preserved when recycled -> need to refresh source list
-                user.isFollowed = isChecked
+    private fun ItemUserBinding.setupFollowing(user: User?) {
+        if (user != null) {
+            followToggle.also {
+                // Need to clear the listener before setting to prevent invocation of callback
+                // when row was recycled or just updated
+                it.setOnCheckedChangeListener(null)
+                it.isChecked = user.isFollowed ?: false
+                it.setOnCheckedChangeListener { _, isChecked ->
+                    changeUserIsFollowListener?.changeUserIsFollowing(user, isChecked)
+                    // TODO This state is not preserved when recycled -> need to refresh source list
+                    user.isFollowed = isChecked
+                }
             }
         }
     }
