@@ -25,6 +25,7 @@ import me.hlatky.wbpo.MainViewModel
 import me.hlatky.wbpo.R
 import me.hlatky.wbpo.Route
 import me.hlatky.wbpo.model.User
+import me.hlatky.wbpo.ui.GridSpacingItemDecoration
 import me.hlatky.wbpo.util.NetworkStatusTracker
 import me.hlatky.wbpo.util.NetworkStatusTracker.Status.Available
 import me.hlatky.wbpo.util.getLocalizedUserFacingMessage
@@ -75,8 +76,10 @@ class UserListFragment : Fragment() {
         // Setup list
         view.findViewById<RecyclerView>(R.id.list).also { list ->
             val columns = resources.getInteger(R.integer.user_grid_columns)
+            val spacingPx = resources.getDimensionPixelSize(R.dimen.user_grid_spacing)
 
             list.layoutManager = GridLayoutManager(requireContext(), columns)
+            list.addItemDecoration(GridSpacingItemDecoration(columns, spacingPx))
             list.adapter = adapter.also {
                 it.addLoadStateListener { states ->
                     val firstError =
