@@ -10,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import me.hlatky.wbpo.MainViewModel
@@ -69,11 +68,9 @@ class UserListFragment : Fragment() {
 
         // Setup list
         binding.list.also {
-            val columns = resources.getInteger(R.integer.user_grid_columns)
             val spacingPx = resources.getDimensionPixelSize(R.dimen.user_grid_spacing)
 
-            it.layoutManager = GridLayoutManager(requireContext(), columns)
-            it.addItemDecoration(GridSpacingItemDecoration(columns, spacingPx))
+            it.addItemDecoration(GridSpacingItemDecoration(spacingPx))
             it.adapter = adapter
 
             RecyclerViewScrollButtonHelper(recyclerView = it, target = binding.button)

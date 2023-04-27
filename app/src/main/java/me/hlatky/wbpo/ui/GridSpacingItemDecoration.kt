@@ -2,16 +2,17 @@ package me.hlatky.wbpo.ui
 
 import android.graphics.Rect
 import android.view.View
-import androidx.annotation.IntRange
 import androidx.annotation.Px
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 /** [RecyclerView.ItemDecoration] that adds spaces between cells. */
 class GridSpacingItemDecoration(
-    @IntRange(from = 1) private val spanCount: Int,
     @Px private val spacing: Int,
     private val includeEdge: Boolean = true
 ) : RecyclerView.ItemDecoration() {
+
+    private var spanCount: Int = 0
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -19,6 +20,13 @@ class GridSpacingItemDecoration(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
+        if (spanCount == 0) {
+            spanCount = when (val lm = parent.layoutManager) {
+                is GridLayoutManager -> lm.spanCount
+                else /* LinearLayoutManager */ -> 1
+            }
+        }
+
         val position = parent.getChildAdapterPosition(view)
         val column = position % spanCount
 
